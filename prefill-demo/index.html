@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Participant Lookup handoff &middot; registration side</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #f4f5f7; color: #1c1e21; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 36px 20px 72px; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .05em;
+       color: #5b6472; margin: 32px 0 10px; }
+  .sub { margin: 0 0 22px; color: #5b6472; }
+  .card { background: #fff; border: 1px solid #e2e5ea; border-radius: 12px; padding: 20px 22px; }
+  .card.flush { padding: 0; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { border: 1px solid #e2e5ea; padding: 8px 11px; text-align: left; white-space: nowrap; }
+  th { background: #eef0f3; font-weight: 600; }
+  code, pre { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  code { font-size: 12px; }
+  .btn { display: inline-block; background: #2563eb; color: #fff; text-decoration: none;
+         font-weight: 600; font-size: 13px; padding: 7px 14px; border-radius: 7px; cursor: pointer; }
+  .btn:hover { background: #1d4ed8; }
+  .btn.ghost { background: transparent; color: #2563eb; border: 1px solid #c7ccd4; }
+  .btn.ghost:hover { background: #eef2ff; }
+  .muted { color: #8a929e; font-size: 12px; }
+  .lookup { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .lookup input { font: 14px ui-monospace, Menlo, Consolas, monospace; padding: 8px 11px;
+    border: 1px solid #c7ccd4; border-radius: 7px; min-width: 200px; background: #fff; color: #1c1e21; }
+  .lookup input:focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; }
+  .try { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  dl.cfg { display: grid; grid-template-columns: max-content 1fr; gap: 5px 16px; margin: 0; font-size: 13px; }
+  dl.cfg dt { color: #5b6472; }
+  dl.cfg dd { margin: 0; }
+  a { color: #2563eb; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #16181d; color: #e7e9ee; }
+    .sub, .muted, h2, dl.cfg dt { color: #9aa4b2; }
+    .card { background: #1d2027; border-color: #333842; }
+    th { background: #22252c; }
+    th, td { border-color: #333842; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Participant Lookup handoff</h1>
+  <p class="sub">Registration-system side. The entire integration is a one-way
+    redirect &mdash; no token, no API, no callback.</p>
+
+  <div class="card">
+    <dl class="cfg">
+      <dt>Redirect target (dev)</dt>
+      <dd><code>{{PARTICIPANT_BASE}}/stay#urn=&lt;URN&gt;</code></dd>
+      <dt>Redirect target (prod)</dt>
+      <dd><code>{{PROD_BASE}}/stay#urn=&lt;URN&gt;</code></dd>
+    </dl>
+  </div>
+
+  <h2>Registrations</h2>
+  <div class="card flush">
+    <table>
+      <thead>
+        <tr><th>status</th><th>urn</th><th></th></tr>
+      </thead>
+      <tbody>
+        {{ROWS}}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted"><strong>View participant</strong> hits
+    <code>GET /book?registrationId=&hellip;</code>, which looks up that
+    registration's <code>urn</code> and 302-redirects to
+    <code>/stay#urn=&lt;URN&gt;</code>. No eligibility check on our side
+    &mdash; INQUA's page itself reports unknown / not-confirmed / malformed URNs.</p>
+
+  <h2>Look up any URN directly</h2>
+  <div class="card">
+    <form class="lookup" method="get" action="/lookup">
+      <input name="urn" value="UF410Z" placeholder="e.g. UF410Z" autocomplete="off" spellcheck="false">
+      <button class="btn" type="submit">Open participant lookup</button>
+    </form>
+    <p class="muted" style="margin-bottom:0">Goes straight to
+      <code>/stay#urn=&lt;URN&gt;</code> via <code>GET /lookup?urn=&hellip;</code> &mdash;
+      no registration record needed, exactly like the real integration.</p>
+  </div>
+
+  <h2>INQUA's published test URNs</h2>
+  <div class="card">
+    <p class="muted" style="margin-top:0">Straight to the production Participant
+      Lookup page. Some may show "no confirmed participant found" &mdash; that's
+      expected, not a bug.</p>
+    <div class="try">
+      <a class="btn ghost" href="https://inqua.cotrav.co.in/stay#urn=UF410Z">UF410Z</a>
+      <a class="btn ghost" href="https://inqua.cotrav.co.in/stay#urn=IELVG9">IELVG9</a>
+      <a class="btn ghost" href="https://inqua.cotrav.co.in/stay#urn=CEKUOP">CEKUOP</a>
+      <a class="btn ghost" href="https://inqua.cotrav.co.in/stay#urn=6504DF">6504DF</a>
+    </div>
+  </div>
+
+  <p class="muted" style="margin-top:28px">Peek at the collection at
+    <a href="/debug">/debug</a> &mdash; off by default (set <code>ENABLE_DEBUG_ROUTE=1</code> locally to enable).</p>
+</div>
+</body>
+</html>

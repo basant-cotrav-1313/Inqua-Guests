@@ -1,0 +1,14 @@
+{
+  "name": "booking-portal-handoff",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Registration-side handoff to INQUA's Participant Lookup page: one 302 redirect to /participant?urn=<URN>, no callback API (MongoDB/Mongoose).",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "mongoose": "^8.24.4"
+  }
+}
