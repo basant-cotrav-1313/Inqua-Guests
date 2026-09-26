@@ -10,13 +10,15 @@ import './App.css'
 //   demo (default): https://demoinqua.cotrav.co.in
 //   production:      https://inqua.cotrav.co.in
 const PARTICIPANT_BASE_URL =
-  import.meta.env.VITE_PARTICIPANT_BASE_URL || 'https://demoinqua.cotrav.co.in'
+  // import.meta.env.VITE_PARTICIPANT_BASE_URL || 'https://demoinqua.cotrav.co.in'
+  import.meta.env.VITE_PARTICIPANT_BASE_URL || 'http://localhost:3000'
 
 const SAMPLE_URNS = [
   { urn: 'UF410Z', status: 'confirmed' },
   { urn: 'IELVG9', status: 'confirmed' },
   { urn: 'CEKUOP', status: 'confirmed' },
   { urn: '6504DF', status: 'cancelled' },
+  { urn: 'RIP6PC', status: 'live URN' },
 ]
 
 function participantUrl(urn) {
