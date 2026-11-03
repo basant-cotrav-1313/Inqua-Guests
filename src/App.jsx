@@ -12,6 +12,7 @@ import './App.css'
 const PARTICIPANT_BASE_URL =
   // import.meta.env.VITE_PARTICIPANT_BASE_URL || 'https://demoinqua.cotrav.co.in'
   import.meta.env.VITE_PARTICIPANT_BASE_URL || 'http://localhost:3000'
+  // import.meta.env.VITE_PARTICIPANT_BASE_URL || 'https://inqua.cotrav.co.in/'
 
 const SAMPLE_URNS = [
   { urn: 'UF410Z', status: 'confirmed' },
@@ -19,6 +20,7 @@ const SAMPLE_URNS = [
   { urn: 'CEKUOP', status: 'confirmed' },
   { urn: '6504DF', status: 'cancelled' },
   { urn: 'RIP6PC', status: 'live URN' },
+  { urn: 'WZ2ZBX', status: 'live URN' },
 ]
 
 function participantUrl(urn) {
